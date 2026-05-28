@@ -1,109 +1,207 @@
-# Energy Consumption Forecasting
+# ⚡ Energy Consumption Forecasting
 
-This project implements a **time-series forecasting pipeline** for energy consumption using Python and machine learning. It includes data preprocessing, feature engineering, model training, evaluation, and prediction.
+A Machine Learning powered web application for forecasting energy consumption using time-series analysis, feature engineering, and XGBoost.
 
 ---
 
-## **Project Structure**
+## 🚀 Live Demo
 
+Live Streamlit App:
+
+https://tensorflow-projects-eth49cwgnlcgtmvdhgjkbc.streamlit.app/
+
+---
+
+## 📂 GitHub Repository
+
+https://github.com/sarthak140706-spec/tensorflow-projects
+
+---
+
+# 📌 Features
+
+* 📊 Energy consumption forecasting
+* ⚡ Interactive Streamlit dashboard
+* 🧠 XGBoost regression model
+* 🕒 Time-series feature engineering
+* 📈 Real-time prediction interface
+* 🛠 Automated preprocessing pipeline
+* 💾 Model persistence using Joblib
+
+---
+
+# 🏗 Project Structure
+
+```bash
 energy-consumption-forecasting/
 │
 ├── data/
-│ └── energy_dataset.csv # Raw dataset
+│   └── energy_dataset.csv
 │
-├── models/ # Folder to save trained models
-│ └── xgboost_energy_model.pkl
+├── models/
+│   └── xgboost_energy_model.pkl
 │
 ├── src/
-│ ├── data_loader.py # Loads and parses dataset
-│ ├── preprocessing.py # Handles missing values, outliers, scaling, feature engineering
-│ ├── train.py # Training pipeline with model evaluation
-│ └── predict.py # Forecasting using trained model
+│   ├── data_loader.py
+│   ├── preprocessing.py
+│   ├── train.py
+│   └── predict.py
 │
-├── main.py # Main script to run the full pipeline
-├── README.md # Project documentation
-└── requirements.txt # Python dependencies
-
-yaml
-Copy code
+├── app.py
+├── main.py
+├── README.md
+└── requirements.txt
+```
 
 ---
 
-## **Installation**
+# ⚙️ Installation
 
-1. Clone the repository:
+## 1️⃣ Clone Repository
+
 ```bash
-git clone <repository-url>
-cd energy-consumption-forecasting
-Create a virtual environment (recommended):
+git clone https://github.com/sarthak140706-spec/tensorflow-projects.git
+```
 
-bash
-Copy code
+```bash
+cd tensorflow-projects/energy-consumption-forecasting
+```
+
+---
+
+## 2️⃣ Create Virtual Environment
+
+### Windows
+
+```bash
 python -m venv tf
-Activate the environment:
-
-Windows:
-
-bash
-Copy code
 tf\Scripts\activate
-Linux/macOS:
+```
 
-bash
-Copy code
+### Linux/macOS
+
+```bash
+python3 -m venv tf
 source tf/bin/activate
-Install dependencies:
+```
 
-bash
-Copy code
+---
+
+## 3️⃣ Install Dependencies
+
+```bash
 pip install -r requirements.txt
-Usage
-Place your dataset energy_dataset.csv inside the data/ folder.
+```
 
-Run the main pipeline:
+---
 
-bash
-Copy code
+# ▶️ Run Application
+
+## Streamlit Web App
+
+```bash
+streamlit run app.py
+```
+
+---
+
+## Training Pipeline
+
+```bash
 python main.py
-This will:
+```
 
-Load the dataset
+This pipeline performs:
 
-Preprocess it (handle missing values, remove outliers, create lag features)
+* Dataset loading
+* Missing value handling
+* Outlier processing
+* Feature engineering
+* Model training
+* Model evaluation
+* Model saving
 
-Train an XGBoost model
+---
 
-Save the model to models/xgboost_energy_model.pkl
+# 📊 Machine Learning Workflow
 
-Print evaluation metrics (MAE, MSE, R²)
+## Data Preprocessing
 
-Forecast energy consumption for future steps (optional using predict.py)
+* Missing value handling
+* Time conversion
+* Feature extraction
+* Scaling
+* Lag feature generation
 
-Customization
-Change model type:
-Modify model_type in main.py (linear, random_forest, xgboost).
+---
 
-Adjust lag features:
-Modify lags in preprocessing.py (default is [1]).
+## Feature Engineering
 
-Change scaling method:
-scale_method='minmax' or 'standard'.
+Extracted features include:
 
-Evaluation Metrics
-MAE (Mean Absolute Error): Measures average magnitude of errors.
+* Hour
+* Day
+* Month
+* Year
+* Weekday
 
-MSE (Mean Squared Error): Measures squared errors.
+---
 
-R² Score: Explains variance captured by the model.
+## Model Used
 
-Dependencies
-Python 3.10+
+* XGBoost Regressor
 
-pandas, numpy, scikit-learn, scipy, xgboost, joblib
+---
 
-Notes
-Ensure the models/ folder exists for saving trained models.
+# 📈 Evaluation Metrics
 
-Make sure the time column in the CSV is correctly formatted (ISO 8601 or datetime-like).
+The project evaluates model performance using:
 
-Reduce the number of lag features if you encounter “No data left after lag feature creation” errors.
+* **MAE** → Mean Absolute Error
+* **MSE** → Mean Squared Error
+* **R² Score** → Variance explanation score
+
+---
+
+# 🛠 Tech Stack
+
+* Python
+* Streamlit
+* XGBoost
+* Scikit-learn
+* Pandas
+* NumPy
+* Joblib
+
+---
+
+# 🔮 Future Improvements
+
+* Deep Learning (LSTM/GRU)
+* Real-time API integration
+* Energy trend visualization
+* Interactive analytics dashboard
+* Multi-step forecasting
+* Cloud deployment optimization
+
+---
+
+# 👨‍💻 Author
+
+Sarthak Jadhav
+
+AI & Data Science Engineering Student
+
+---
+
+# ⭐ Contributing
+
+Contributions, issues, and feature requests are welcome.
+
+Feel free to fork the project and submit pull requests.
+
+---
+
+# 📜 License
+
+This project is open-source and available under the MIT License.
