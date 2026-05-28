@@ -1,0 +1,7 @@
+Python 3.8+
+TensorFlow 2.x
+NumPy
+scikit-learn
+matplotlib
+seaborn
+Keras
