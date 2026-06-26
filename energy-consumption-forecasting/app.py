@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 import numpy as np
 import pandas as pd
@@ -17,7 +18,14 @@ st.set_page_config(
 # LOAD MODEL
 # =========================
 
-model = joblib.load("models/xgboost_energy_model.pkl")
+MODEL_PATH = os.path.join(os.path.dirname(__file__), "models", "xgboost_energy_model.pkl")
+
+if not os.path.exists(MODEL_PATH):
+    st.error(f"❌ Model file not found at: `{MODEL_PATH}`")
+    st.info("Make sure `xgboost_energy_model.pkl` is committed inside the `models/` folder in your GitHub repo.")
+    st.stop()
+
+model = joblib.load(MODEL_PATH)
 
 # =========================
 # TITLE
@@ -43,7 +51,11 @@ time_input = st.text_input(
 )
 
 # Convert datetime
-dt = pd.to_datetime(time_input)
+try:
+    dt = pd.to_datetime(time_input)
+except Exception:
+    st.error("❌ Invalid date format. Please use: YYYY-MM-DD HH:MM:SS")
+    st.stop()
 
 # Extract engineered features
 hour = dt.hour
@@ -307,7 +319,6 @@ if st.button("⚡ Predict Energy Consumption"):
         )
 
         # Consumption Category
-
         if predicted_value < 100:
             st.info("🟢 Low Energy Consumption")
 
@@ -318,14 +329,33 @@ if st.button("⚡ Predict Energy Consumption"):
             st.error("🔴 High Energy Consumption")
 
         # Input Summary
-
         st.subheader("📋 Input Summary")
 
+        feature_names = [
+            "hour", "day", "month", "year", "weekday",
+            "generation biomass", "generation fossil brown coal/lignite",
+            "generation fossil coal-derived gas", "generation fossil gas",
+            "generation fossil hard coal", "generation fossil oil",
+            "generation fossil oil shale", "generation fossil peat",
+            "generation geothermal", "generation hydro pumped storage aggregated",
+            "generation hydro pumped storage consumption",
+            "generation hydro run-of-river and poundage",
+            "generation hydro water reservoir", "generation marine",
+            "generation nuclear", "generation other",
+            "generation other renewable", "generation solar",
+            "generation waste", "generation wind offshore",
+            "generation wind onshore", "forecast solar day ahead",
+            "forecast wind offshore eday ahead", "forecast wind onshore day ahead",
+            "total load forecast", "total load actual",
+            "price day ahead", "price actual"
+        ]
+
         summary_df = pd.DataFrame({
-            "Feature Values": features
+            "Feature": feature_names,
+            "Value": features
         })
 
-        st.dataframe(summary_df)
+        st.dataframe(summary_df, use_container_width=True)
 
     except Exception as e:
 
