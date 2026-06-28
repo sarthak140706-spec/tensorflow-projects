@@ -1,32 +1,139 @@
+"""
+Model Architecture for Face Mask Detection
+"""
 
 from tensorflow.keras.models import Model, Sequential
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout, Input
+from tensorflow.keras.layers import (
+    Input,
+    Conv2D,
+    MaxPooling2D,
+    Dense,
+    Dropout,
+    Flatten,
+    BatchNormalization,
+    GlobalAveragePooling2D
+)
+
+from tensorflow.keras.regularizers import l2
 from tensorflow.keras.applications import MobileNetV2
-from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 
-def build_model(img_height, img_width, img_channels, num_classes=2, use_transfer=True):
 
-    if use_transfer is True:
-        # Transfer Learning
-        base_model = MobileNetV2(include_top=False, weights='imagenet', input_shape=(img_height, img_width, img_channels))
-        base_model.trainable = False  # freeze base layers
-        x = base_model.output
-        x = Flatten()(x)
-        x = Dense(128, activation='relu')(x)
+def build_model(
+    img_height,
+    img_width,
+    img_channels,
+    num_classes=2,
+    use_transfer=True
+):
+    """
+    Builds the Face Mask Detection model.
+
+    Parameters
+    ----------
+    img_height : int
+    img_width : int
+    img_channels : int
+    num_classes : int
+    use_transfer : bool
+
+    Returns
+    -------
+    TensorFlow/Keras Model
+    """
+
+    if use_transfer:
+
+        # -------------------------------------------------
+        # MobileNetV2 Backbone
+        # -------------------------------------------------
+
+        base_model = MobileNetV2(
+            weights="imagenet",
+            include_top=False,
+            input_shape=(img_height, img_width, img_channels)
+        )
+
+        # Freeze pretrained layers
+        base_model.trainable = False
+
+        inputs = Input(
+            shape=(img_height, img_width, img_channels)
+        )
+
+        x = base_model(inputs, training=False)
+
+        x = GlobalAveragePooling2D()(x)
+
+        x = BatchNormalization()(x)
+
+        x = Dense(
+            128,
+            activation="relu",
+            kernel_regularizer=l2(0.001)
+        )(x)
+
         x = Dropout(0.5)(x)
-        predictions = Dense(num_classes, activation='softmax')(x)
-        model = Model(inputs=base_model.input, outputs=predictions)
+
+        outputs = Dense(
+            num_classes,
+            activation="softmax"
+        )(x)
+
+        model = Model(
+            inputs,
+            outputs
+        )
 
     else:
-        # Simple CNN from scratch
-        model = Sequential()
-        model.add(Conv2D(32, (3,3), activation='relu', input_shape=(img_height, img_width, img_channels)))
-        model.add(MaxPooling2D((2,2)))
-        model.add(Conv2D(64, (3,3), activation='relu'))
-        model.add(MaxPooling2D((2,2)))
-        model.add(Flatten())
-        model.add(Dense(128, activation='relu'))
-        model.add(Dropout(0.5))
-        model.add(Dense(num_classes, activation='softmax'))
+
+        # -------------------------------------------------
+        # Custom CNN
+        # -------------------------------------------------
+
+        model = Sequential([
+
+            Input(
+                shape=(img_height, img_width, img_channels)
+            ),
+
+            Conv2D(
+                32,
+                (3, 3),
+                activation="relu"
+            ),
+
+            MaxPooling2D(),
+
+            Conv2D(
+                64,
+                (3, 3),
+                activation="relu"
+            ),
+
+            MaxPooling2D(),
+
+            Conv2D(
+                128,
+                (3, 3),
+                activation="relu"
+            ),
+
+            MaxPooling2D(),
+
+            Flatten(),
+
+            Dense(
+                256,
+                activation="relu"
+            ),
+
+            Dropout(0.5),
+
+            Dense(
+                num_classes,
+                activation="softmax"
+            )
+
+        ])
 
     return model

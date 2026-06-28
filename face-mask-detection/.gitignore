@@ -1,0 +1,54 @@
+
+# =========================
+# Dataset (DO NOT PUSH)
+# =========================
+data/
+
+# =========================
+# Python cache files
+# =========================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# =========================
+# Virtual environments
+# =========================
+venv/
+env/
+ENV/
+
+# =========================
+# Logs
+# =========================
+*.log
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Jupyter Notebook checkpoints
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# Model checkpoints (optional)
+# -------------------------
+# REMOVE THIS LINE if you want to PUSH model:
+# =========================
+# models/
+# *.h5
+
+# =========================
+# TensorFlow saved models (optional backup ignore)
+# =========================
+saved_model/
+
+# =========================
+# Streamlit cache
+# =========================
+.streamlit/
