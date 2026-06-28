@@ -1,7 +1,6 @@
-Python 3.8+
-TensorFlow 2.x
-NumPy
+streamlit
+tensorflow
+numpy
 scikit-learn
 matplotlib
-seaborn
-Keras
+pillow
